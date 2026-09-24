@@ -4,7 +4,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 declare global {
   var prisma: PrismaClient | undefined;
 }
-
+//fix the prisma
 export const prisma =
   globalThis.prisma ??
   new PrismaClient({

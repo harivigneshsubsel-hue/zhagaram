@@ -5,13 +5,14 @@ import { ProductFeatures } from "@/components/products/ProductFeatures";
 import { ProductHero } from "@/components/products/ProductHero";
 import { RelatedProducts } from "@/components/products/RelatedProducts";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { getProductBySlug } from "@/data/products";
+import { fetchCatalogProduct } from "@/lib/catalog-api";
 import { pageTitle } from "@/lib/metadata";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/products/$slug")({
-  loader: ({ params }) => {
-    const product = getProductBySlug(params.slug);
+  staleTime: 30_000,
+  loader: async ({ params }) => {
+    const product = await fetchCatalogProduct(params.slug);
     if (!product) throw notFound();
     return { product };
   },
@@ -44,6 +45,7 @@ function ProductPage() {
       <ProductHero
         title={product.title}
         description={product.shortDescription}
+        image={product.image || undefined}
         crumbs={[
           { label: "Home", href: "/" },
           { label: "Products", href: "/products" },
@@ -52,6 +54,7 @@ function ProductPage() {
       />
       <ProductDetails product={product} />
       <ProductFeatures product={product} />
+
       <RelatedProducts slug={product.slug} />
       <CTASection />
     </>

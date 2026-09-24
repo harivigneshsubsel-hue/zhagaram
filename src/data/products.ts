@@ -9,7 +9,7 @@ export const products: Product[] = [
       "Indian spices sourced for quality, aroma, and consistent international supply.",
     description:
       "Spices are a core agricultural export category. Selection focuses on quality and careful handling so that flavour, colour, and cleanliness are preserved through packaging and onward logistics. Specific spice names, grades, and origin claims are published only when verified by the business.",
-    image: "/images/products/spices.jpg",
+    image: "/images/export/quality.jpg",
     icon: "sparkles",
     features: [
       "Sourced from reliable farmers, manufacturers, and trusted suppliers",
@@ -89,7 +89,7 @@ export const products: Product[] = [
       "Additional agricultural and food products sourced for international supply.",
     description:
       "Beyond the named categories, other agricultural and food products may be sourced from farmers, manufacturers, and trusted suppliers according to enquiry. Items are confirmed case by case rather than listed as a catalogue of unverified SKUs.",
-    image: "/images/products/other-products.jpg",
+    image: "/images/export/packaging.jpg",
     icon: "box",
     features: [
       "Enquiry-led sourcing",

@@ -1,5 +1,3 @@
-import { MessageCircle } from "lucide-react";
-
 export function WhatsAppButton() {
   const phoneNumber = "919XXXXXXXXX";
 
@@ -41,7 +39,12 @@ export function WhatsAppButton() {
         sm:right-8
       "
     >
-      <MessageCircle className="size-7 fill-white stroke-white" />
+      <img
+        src="/images/common/whatsapp-icon.svg"
+        alt=""
+        aria-hidden="true"
+        className="size-7 shrink-0 object-contain"
+      />
 
       {/* Notification dot */}
       <span

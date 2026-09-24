@@ -7,7 +7,7 @@ export const siteConfig: SiteConfig = {
   description:
     "India-based export and import company supplying quality agricultural and food products to international markets.",
   locale: "en",
-  url: "https://zhagaram-exim.example",
+  url: "https://zhagaramexim.com",
 };
 
 export const companyCopy: CompanyCopy = {
@@ -59,4 +59,4 @@ export const contactPlaceholders: ContactPlaceholder[] = [
 ];
 
 export const formNotice =
-  "Enquiries are validated in the browser and stored locally until a mail service is connected. Submitting this form does not send an email yet.";
+  "Your enquiry is validated and sent securely to the ZHAGARAM EXIM team. You will receive a confirmation email after successful submission.";

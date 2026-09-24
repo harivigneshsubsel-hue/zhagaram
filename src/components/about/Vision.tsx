@@ -43,7 +43,7 @@ export function Vision() {
               className="route-line"
               d="M60 300 C 280 260, 340 80, 560 140 S 860 340, 1140 90"
               fill="none"
-              stroke="#A6844A"
+              stroke="#D4AF37"
               strokeWidth="2"
               opacity="0.85"
             />
@@ -52,14 +52,14 @@ export function Vision() {
               cx="60"
               cy="300"
               r="5"
-              fill="#A6844A"
+              fill="#D4AF37"
             />
 
             <circle
               cx="1140"
               cy="90"
               r="5"
-              fill="#F4EFE6"
+              fill="#FFFFFF"
             />
           </svg>
 

@@ -11,7 +11,7 @@ export function Breadcrumb({
   tone?: "light" | "dark";
 }) {
   return (
-    <nav aria-label="Breadcrumb">
+    <nav aria-label="Breadcrumb" className="relative z-20">
       <ol className="flex flex-wrap items-center gap-1 text-sm">
         {items.map((item, index) => {
           const last = index === items.length - 1;
@@ -23,7 +23,7 @@ export function Breadcrumb({
                   className={cn(
                     "hover:underline",
                     tone === "dark"
-                      ? "text-primary-foreground/65 hover:text-primary-foreground"
+                      ? "text-white/75 hover:text-white"
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >
@@ -31,7 +31,7 @@ export function Breadcrumb({
                 </Link>
               ) : (
                 <span
-                  className={tone === "dark" ? "text-primary-foreground" : "text-foreground"}
+                  className={tone === "dark" ? "text-white" : "text-foreground"}
                   aria-current={last ? "page" : undefined}
                 >
                   {item.label}
@@ -41,7 +41,7 @@ export function Breadcrumb({
                 <ChevronRight
                   className={cn(
                     "size-3.5",
-                    tone === "dark" ? "text-primary-foreground/40" : "opacity-60",
+                    tone === "dark" ? "text-white/60" : "opacity-60",
                   )}
                   aria-hidden
                 />

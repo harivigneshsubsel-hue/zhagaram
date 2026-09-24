@@ -11,12 +11,12 @@ export function CTASection() {
         alt="Port and cargo ships at dusk. Illustrative logistics photography."
         className="absolute inset-0 size-full object-cover opacity-90 "
       />
-      <div className="absolute inset-0 bg-primary/65" />
+      <div className="absolute inset-0 bg-primary/30" />
       <Container className="relative text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+        {/* <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
           Get a Quote
-        </p>
-        <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl">
+        </p> */}
+        <h2 className="mx-auto mt-4 max-w-2xl text-white text-3xl font-semibold tracking-tight sm:text-5xl">
           Tell us what you need to move.
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-base text-primary-foreground/100">

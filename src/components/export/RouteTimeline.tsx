@@ -98,7 +98,7 @@ export function RouteTimeline() {
       ========================================== */}
       <div className="lg:hidden">
         <ol className="relative ml-3 border-l border-primary/15 pl-8">
-          {supplyRoute.map((step, index) => (
+          {supplyRoute.map((step, _index) => (
             <li
               key={step.id}
               className="group relative pb-10 last:pb-0"

@@ -9,8 +9,8 @@ export function ContactHero({
 }) {
   return (
     <PageHero
-      image="public/images/contact/contact-banner.png"
-      kicker="Contact"
+      image="/images/contact/contact-banner.png"
+      // kicker="Contact"
       title={title}
       description={description}
       crumbs={[

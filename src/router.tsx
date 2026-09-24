@@ -9,5 +9,7 @@ export function getRouter() {
     defaultErrorComponent: AppErrorComponent,
     defaultNotFoundComponent: NotFound,
     scrollRestoration: true,
+    defaultPreload: "intent",
+    defaultPreloadStaleTime: 30_000,
   });
 }

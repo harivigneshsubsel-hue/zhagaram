@@ -26,7 +26,7 @@ function FaqPage() {
     <>
       <JsonLd data={faqJsonLd(faqs)} />
       <PageHero
-  image="public/images/faq/faq-banner.png"
+  image="/images/faq/faq-banner.png"
   kicker="FAQ"
   title="Frequently asked questions"
   description="Find answers about our products, sourcing and export process."

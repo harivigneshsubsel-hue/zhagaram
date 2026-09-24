@@ -4,19 +4,19 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap",
   {
     variants: {
       variant: {
         primary:
-          "bg-primary text-primary-foreground hover:bg-primary-dark shadow-[0_1px_0_rgb(255_255_255/0.08)_inset]",
+          "bg-primary text-primary-foreground hover:bg-secondary shadow-[0_1px_0_rgb(255_255_255/0.08)_inset]",
         secondary:
-          "bg-card text-foreground ring-1 ring-border hover:bg-muted",
-        ghost: "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10",
+          "bg-card text-foreground ring-1 ring-[#D4AF37] hover:bg-light-grey",
+        ghost: "text-primary hover:text-secondary hover:bg-primary/5",
         outline:
-          "bg-transparent text-primary-foreground ring-1 ring-primary-foreground/40 hover:bg-primary-foreground/10",
-        gold: "bg-accent text-accent-foreground hover:brightness-95",
-        dark: "bg-secondary text-secondary-foreground hover:bg-ink",
+          "bg-white text-primary ring-1 ring-primary/20 hover:bg-light-grey",
+        gold: "bg-accent text-dark-navy hover:brightness-95",
+        dark: "bg-dark-navy text-white hover:bg-primary",
       },
       size: {
         sm: "h-10 px-4 text-sm rounded-md",
@@ -48,7 +48,7 @@ export function Button({
   const classes = cn(buttonVariants({ variant, size }), className);
   if (href) {
     return (
-      <Link to={href} className={classes}>
+      <Link to={href} preload="intent" className={classes}>
         {children}
       </Link>
     );

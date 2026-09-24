@@ -3,42 +3,41 @@ import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 export function Logo({
-  tone = "dark",
+  tone: _tone = "dark",
   compact = false,
 }: {
   tone?: "dark" | "light";
   compact?: boolean;
 }) {
-  const ink = tone === "light" ? "text-primary-foreground" : "text-foreground";
   return (
     <Link
       to="/"
-      className="flex items-center gap-3 rounded-sm focus-visible:outline-offset-4"
+      className="flex items-center rounded-sm border-0 outline-none focus-visible:outline-none"
       aria-label={`${siteConfig.name} home`}
     >
-      <span className="relative flex size-10 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
-        <svg viewBox="0 0 32 32" className="size-6" aria-hidden>
-          <path
-            d="M8 8h11.5c2.8 0 4.5 1.7 4.5 4.1 0 2.6-1.9 4.1-4.7 4.1H14v8H8V8zm6 5.6h4.4c1.1 0 1.8-.6 1.8-1.5s-.6-1.5-1.8-1.5H14v3z"
-            fill="currentColor"
-          />
-          <path
-            d="M21.2 6.5c.3 1.4.2 2.6-.4 3.5"
-            fill="none"
-            stroke="#A6844A"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-          />
-        </svg>
-      </span>
-      <span className={cn("leading-tight", compact && "hidden sm:block")}>
-        <span className={cn("block text-[13px] font-semibold tracking-[0.18em] uppercase", ink)}>
-          Zhagaram
-        </span>
-        <span className={cn("block text-[11px] tracking-[0.28em] uppercase", tone === "light" ? "text-primary-foreground/70" : "text-muted-foreground")}>
-          Exim LLP
-        </span>
-      </span>
+      {/* Desktop & Tablet */}
+      <img
+        src="/logo.png"
+        alt={siteConfig.name}
+        className={cn(
+          "hidden w-auto max-w-none border-0 object-contain outline-none",
+          "h-14 sm:h-14 md:h-16 lg:h-[4.75rem] xl:h-20 2xl:h-[5.5rem]",
+          "sm:block",
+          compact &&
+            "sm:h-12 md:h-14 lg:h-16 xl:h-[4.5rem] 2xl:h-20",
+        )}
+      />
+
+      {/* Mobile */}
+      <img
+        src="/images/common/mobile-logo.png"
+        alt={siteConfig.name}
+        className={cn(
+          "block h-12 w-auto max-w-[11rem] border-0 object-contain outline-none",
+          compact && "h-10 max-w-[9rem]",
+          "sm:hidden",
+        )}
+      />
     </Link>
   );
 }

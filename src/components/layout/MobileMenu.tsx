@@ -18,7 +18,7 @@ export function MobileMenu({
       id="mobile-menu"
       hidden={!open}
       className={cn(
-        "border-t border-primary/10 bg-cream lg:hidden",
+        "border-t border-primary/10 bg-white lg:hidden",
         open ? "block" : "hidden",
       )}
     >
@@ -37,14 +37,15 @@ export function MobileMenu({
             <Link
               key={item.href}
               to={item.href}
+              preload="intent"
               onClick={onClose}
               className={cn(
                 "rounded-md px-4 py-3 text-base font-medium",
                 "transition-all duration-200",
 
                 active
-                  ? "bg-primary/10 text-primary"
-                  : "text-primary hover:bg-primary/5 hover:text-primary-dark",
+                  ? "bg-primary text-white"
+                  : "text-primary hover:bg-light-grey hover:text-secondary",
               )}
             >
               {item.label}
@@ -56,13 +57,14 @@ export function MobileMenu({
 
         <Link
           to={ctaNavigation.href}
+          preload="intent"
           onClick={onClose}
           className={cn(
             "mt-4 inline-flex h-12 items-center justify-center",
-            "rounded-lg bg-primary px-5",
-            "text-sm font-semibold text-primary-foreground",
+            "rounded-lg bg-accent px-5",
+            "text-sm font-semibold text-dark-navy",
             "transition-colors duration-200",
-            "hover:bg-primary-dark",
+            "hover:brightness-95",
           )}
         >
           {ctaNavigation.label}

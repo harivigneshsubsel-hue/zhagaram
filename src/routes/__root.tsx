@@ -5,7 +5,6 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { NotFound } from "@/components/common/NotFound";
 import { pageTitle, pageDescription } from "@/lib/metadata";
 import appCss from "../styles.css?url";
-import { WhatsAppButton } from "@/components/common/WhatsAppButton";
 export const Route = createRootRoute({
   head: () => ({
     meta: [
@@ -13,10 +12,10 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: pageTitle() },
       { name: "description", content: pageDescription() },
-      { name: "theme-color", content: "#1E4738" },
+      { name: "theme-color", content: "#0B2D5B" },
     ],
     links: [
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
@@ -37,7 +36,7 @@ function RootDocument() {
         <HeadContent />
       </head>
 
-      <body>
+      <body className="overflow-x-clip" suppressHydrationWarning>
         <PreviewHostBridge />
 
         <AuthProvider>
@@ -46,8 +45,6 @@ function RootDocument() {
           </SiteShell>
         </AuthProvider>
 
-        {/* Global WhatsApp Sticky Button */}
-        <WhatsAppButton />
 
         <Scripts />
       </body>

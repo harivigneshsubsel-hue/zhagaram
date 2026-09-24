@@ -20,17 +20,17 @@ export function PageHero({
 }) {
   return (
     <section
-      className="-mt-[4.25rem] relative overflow-hidden border-b border-primary-dark bg-primary-dark text-primary-foreground"
+      className="relative -mt-[4.25rem] overflow-hidden border-b border-primary/10 bg-primary-dark text-primary-foreground"
       style={
         image
           ? {
               backgroundImage: `
                 linear-gradient(
                   90deg,
-                  rgba(6, 56, 36, 0.95) 0%,
-                  rgba(6, 56, 36, 0.82) 38%,
-                  rgba(6, 56, 36, 0.55) 68%,
-                  rgba(6, 56, 36, 0.35) 100%
+                  rgba(11, 45, 91, 0.94) 0%,
+                  rgba(11, 45, 91, 0.84) 20%,
+                  rgba(11, 45, 91, 0.65) 30%,
+                  rgba(11, 45, 91, 0.42) 50%
                 ),
                 url("${image}")
               `,
@@ -40,21 +40,21 @@ export function PageHero({
           : undefined
       }
     >
-      <Container className="relative z-10 py-14 sm:py-20">
+      <Container className="relative z-10 pt-28 pb-14 sm:pt-32 sm:pb-20 lg:pt-36">
         <Breadcrumb items={crumbs} tone="dark" />
 
         {kicker ? (
-          <p className="mt-8 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+          <p className="mt-8 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-accent sm:text-xs">
             {kicker}
           </p>
         ) : null}
 
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
           {title}
         </h1>
 
         {description ? (
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-primary-foreground/75 sm:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg">
             {description}
           </p>
         ) : null}

@@ -3,7 +3,7 @@ import { Container } from "@/components/common/Container";
 import { ContactDetails } from "@/components/contact/ContactDetails";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ContactHero } from "@/components/contact/ContactHero";
-import { ContactMap } from "@/components/contact/ContactMap";
+
 import { Button } from "@/components/common/Button";
 import { pageTitle } from "@/lib/metadata";
 
@@ -36,11 +36,16 @@ function ContactPage() {
                 <Button href="/get-a-quote">Get a Quote</Button>
               </div>
             </div>
-            <ContactForm heading="Enquiry form" />
+            <ContactForm
+              heading="Interested in supplying your products?"
+              description="Tell us about your products and available quantity. Our team will review your details and get back to you."
+              variant="supplier"
+              submitLabel="Submit"
+            />
           </div>
-          <div className="mt-12">
+          {/* <div className="mt-12">
             <ContactMap />
-          </div>
+          </div> */}
         </Container>
       </section>
     </>

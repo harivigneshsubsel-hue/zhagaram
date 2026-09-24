@@ -37,7 +37,7 @@ export function VisionMission() {
                   className="route-line"
                   d="M40 340 C 180 300, 220 180, 360 200 S 560 320, 760 90"
                   fill="none"
-                  stroke="#A6844A"
+                  stroke="#D4AF37"
                   strokeWidth="2"
                   opacity="0.85"
                 />
@@ -46,14 +46,14 @@ export function VisionMission() {
                   cx="40"
                   cy="340"
                   r="5"
-                  fill="#A6844A"
+                  fill="#D4AF37"
                 />
 
                 <circle
                   cx="760"
                   cy="90"
                   r="5"
-                  fill="#F4EFE6"
+                  fill="#FFFFFF"
                 />
               </svg>
             </div>

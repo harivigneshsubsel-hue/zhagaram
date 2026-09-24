@@ -18,7 +18,7 @@ export function SectionHeading({
       {kicker ? (
         <p
           className={cn(
-            "mb-3 text-xs font-semibold uppercase tracking-[0.22em]",
+            "mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.22em] sm:text-xs",
             tone === "dark" ? "text-accent" : "text-accent",
           )}
         >
@@ -27,7 +27,7 @@ export function SectionHeading({
       ) : null}
       <h2
         className={cn(
-          "text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.6rem] lg:leading-[1.15]",
+          "text-3xl font-semibold tracking-[-0.04em] sm:text-4xl lg:text-[2.6rem] lg:leading-[1.1]",
           tone === "dark" ? "text-primary-foreground" : "text-foreground",
         )}
       >
@@ -36,7 +36,7 @@ export function SectionHeading({
       {description ? (
         <p
           className={cn(
-            "mt-4 max-w-2xl text-base leading-relaxed sm:text-lg",
+            "mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg",
             align === "center" && "mx-auto",
             tone === "dark" ? "text-primary-foreground/75" : "text-muted-foreground",
           )}

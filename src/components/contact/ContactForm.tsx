@@ -1,9 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { formNotice } from "@/data/site";
-import { enquirySchema, productOptions, submitEnquiry, type EnquiryInput } from "@/lib/enquiry";
+import { fetchCatalogCategories } from "@/lib/catalog-api";
+import {
+  customerEnquirySchema,
+  productOptions,
+  submitCustomerEnquiry,
+  submitSupplierEnquiry,
+  supplierEnquirySchema,
+  type CustomerEnquiryInput,
+  type SupplierEnquiryInput,
+} from "@/lib/enquiry";
 import { cn } from "@/lib/utils";
 
-const empty: EnquiryInput = {
+type FormVariant = "supplier" | "customer";
+
+type FormValues = Record<string, string>;
+
+const emptySupplier: SupplierEnquiryInput = {
+  name: "",
+  email: "",
+  phone: "",
+  gstNumber: "",
+  product: "",
+  message: "",
+};
+
+const emptyCustomer: CustomerEnquiryInput = {
   name: "",
   company: "",
   email: "",
@@ -14,36 +37,75 @@ const empty: EnquiryInput = {
   message: "",
 };
 
-export function ContactForm({ heading = "Send an enquiry" }: { heading?: string }) {
-  const [values, setValues] = useState<EnquiryInput>(empty);
-  const [errors, setErrors] = useState<Partial<Record<keyof EnquiryInput, string>>>({});
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+export function ContactForm({
+  heading = "Send an enquiry",
+  description,
+  variant = "customer",
+  submitLabel = "Submit enquiry",
+}: {
+  heading?: string;
+  description?: string;
+  variant?: FormVariant;
+  submitLabel?: string;
+}) {
+  const isSupplier = variant === "supplier";
+  const schema = isSupplier ? supplierEnquirySchema : customerEnquirySchema;
+  const emptyValues = isSupplier ? emptySupplier : emptyCustomer;
 
-  function update<K extends keyof EnquiryInput>(key: K, value: EnquiryInput[K]) {
+  const [values, setValues] = useState<FormValues>(emptyValues as FormValues);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [categoryOptions, setCategoryOptions] = useState(productOptions);
+
+  useEffect(() => {
+    let active = true;
+    void fetchCatalogCategories()
+      .then((categories) => {
+        if (!active || !categories.length) return;
+        setCategoryOptions([
+          ...categories.map((category) => ({ value: category.slug, label: category.name })),
+          { value: "general", label: "General enquiry" },
+        ]);
+      })
+      .catch(() => {
+        // Keep the verified static catalogue as a fallback when the API is unavailable.
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  function update(key: string, value: string) {
     setValues((prev) => ({ ...prev, [key]: value }));
   }
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
-    const parsed = enquirySchema.safeParse(values);
+    const parsed = schema.safeParse(values);
     if (!parsed.success) {
-      const next: Partial<Record<keyof EnquiryInput, string>> = {};
+      const next: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
         const field = issue.path[0];
-        if (typeof field === "string" && !next[field as keyof EnquiryInput]) {
-          next[field as keyof EnquiryInput] = issue.message;
+        if (typeof field === "string" && !next[field]) {
+          next[field] = issue.message;
         }
       }
       setErrors(next);
       setStatus("idle");
       return;
     }
+
     setErrors({});
     setStatus("submitting");
+
     try {
-      await submitEnquiry(parsed.data);
+      if (isSupplier) {
+        await submitSupplierEnquiry(parsed.data as SupplierEnquiryInput);
+      } else {
+        await submitCustomerEnquiry(parsed.data as CustomerEnquiryInput);
+      }
       setStatus("success");
-      setValues(empty);
+      setValues(emptyValues as FormValues);
     } catch {
       setStatus("error");
     }
@@ -53,10 +115,9 @@ export function ContactForm({ heading = "Send an enquiry" }: { heading?: string 
     return (
       <div className="rounded-2xl bg-card p-8 shadow-[var(--shadow-border)]">
         <h2 className="text-2xl font-semibold tracking-tight">Enquiry recorded</h2>
-       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-  Thank you for your enquiry. Your request has been submitted
-  successfully. Our team will review the details and get back to you.
-</p>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          Thank you for your enquiry. Your request has been submitted successfully. Our team will review the details and get back to you.
+        </p>
         <button
           type="button"
           className="mt-6 text-sm font-medium text-primary hover:underline"
@@ -75,99 +136,107 @@ export function ContactForm({ heading = "Send an enquiry" }: { heading?: string 
       className="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)] sm:p-8"
     >
       <h2 className="text-2xl font-semibold tracking-tight">{heading}</h2>
-      <p className="mt-2 text-sm text-muted-foreground">{formNotice}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{description ?? formNotice}</p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <Field
-          id="name"
-          label="Name"
-          value={values.name}
-          error={errors.name}
-          onChange={(v) => update("name", v)}
-        />
-        <Field
-          id="company"
-          label="Company Name"
-          value={values.company}
-          error={errors.company}
-          onChange={(v) => update("company", v)}
-        />
-        <Field
-          id="email"
-          label="Email"
-          type="email"
-          value={values.email}
-          error={errors.email}
-          onChange={(v) => update("email", v)}
-        />
-        <Field
-          id="phone"
-          label="Phone"
-          type="tel"
-          value={values.phone}
-          error={errors.phone}
-          onChange={(v) => update("phone", v)}
-        />
-        <Field
-          id="country"
-          label="Country"
-          value={values.country}
-          error={errors.country}
-          onChange={(v) => update("country", v)}
-        />
-        <div>
-          <label htmlFor="product" className="mb-1.5 block text-sm font-medium">
-            Product
-          </label>
-          <select
-            id="product"
-            value={values.product}
-            onChange={(e) => update("product", e.target.value)}
-            className={inputClass(Boolean(errors.product))}
-            aria-invalid={Boolean(errors.product)}
-          >
-            <option value="">Select a category</option>
-            {productOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          {errors.product ? <ErrorText>{errors.product}</ErrorText> : null}
-        </div>
-        <Field
-          id="quantity"
-          label="Quantity"
-          value={values.quantity}
-          error={errors.quantity}
-          onChange={(v) => update("quantity", v)}
-          className="sm:col-span-2"
-        />
-        <div className="sm:col-span-2">
-          <label htmlFor="message" className="mb-1.5 block text-sm font-medium">
-            Message
-          </label>
-          <textarea
-            id="message"
-            rows={5}
-            value={values.message}
-            onChange={(e) => update("message", e.target.value)}
-            className={cn(inputClass(Boolean(errors.message)), "min-h-32 py-3")}
-            aria-invalid={Boolean(errors.message)}
-          />
-          {errors.message ? <ErrorText>{errors.message}</ErrorText> : null}
-        </div>
+        {isSupplier ? (
+          <>
+            <Field id="name" label="Name" value={values.name ?? ""} error={errors.name} onChange={(v) => update("name", v)} />
+            <Field id="email" label="Email" type="email" value={values.email ?? ""} error={errors.email} onChange={(v) => update("email", v)} />
+            <Field id="phone" label="Phone Number" type="tel" value={values.phone ?? ""} error={errors.phone} onChange={(v) => update("phone", v)} />
+            <Field id="gstNumber" label="GST Number" value={values.gstNumber ?? ""} error={errors.gstNumber} onChange={(v) => update("gstNumber", v)} />
+            <div>
+              <label htmlFor="product" className="mb-1.5 block text-sm font-medium">
+                Product
+              </label>
+              <select
+                id="product"
+                value={values.product ?? ""}
+                onChange={(e) => update("product", e.target.value)}
+                className={inputClass(Boolean(errors.product))}
+                aria-invalid={Boolean(errors.product)}
+              >
+                <option value="">Select a category</option>
+                {categoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {errors.product ? <ErrorText>{errors.product}</ErrorText> : null}
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="message" className="mb-1.5 block text-sm font-medium">
+                Message
+              </label>
+              <textarea
+                id="message"
+                rows={5}
+                value={values.message ?? ""}
+                onChange={(e) => update("message", e.target.value)}
+                className={cn(inputClass(Boolean(errors.message)), "min-h-32 py-3")}
+                aria-invalid={Boolean(errors.message)}
+              />
+              {errors.message ? <ErrorText>{errors.message}</ErrorText> : null}
+            </div>
+          </>
+        ) : (
+          <>
+            <Field id="name" label="Name" value={values.name ?? ""} error={errors.name} onChange={(v) => update("name", v)} />
+            <Field id="company" label="Company Name" value={values.company ?? ""} error={errors.company} onChange={(v) => update("company", v)} />
+            <Field id="email" label="Email" type="email" value={values.email ?? ""} error={errors.email} onChange={(v) => update("email", v)} />
+            <Field id="phone" label="Phone" type="tel" value={values.phone ?? ""} error={errors.phone} onChange={(v) => update("phone", v)} />
+            <Field id="country" label="Country" value={values.country ?? ""} error={errors.country} onChange={(v) => update("country", v)} />
+            <div>
+              <label htmlFor="product" className="mb-1.5 block text-sm font-medium">
+                Product
+              </label>
+              <select
+                id="product"
+                value={values.product ?? ""}
+                onChange={(e) => update("product", e.target.value)}
+                className={inputClass(Boolean(errors.product))}
+                aria-invalid={Boolean(errors.product)}
+              >
+                <option value="">Select a category</option>
+                {categoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {errors.product ? <ErrorText>{errors.product}</ErrorText> : null}
+            </div>
+            <Field id="quantity" label="Quantity" value={values.quantity ?? ""} error={errors.quantity} onChange={(v) => update("quantity", v)} />
+            <div className="sm:col-span-2">
+              <label htmlFor="message" className="mb-1.5 block text-sm font-medium">
+                Description
+              </label>
+              <textarea
+                id="message"
+                rows={5}
+                value={values.message ?? ""}
+                onChange={(e) => update("message", e.target.value)}
+                className={cn(inputClass(Boolean(errors.message)), "min-h-32 py-3")}
+                aria-invalid={Boolean(errors.message)}
+              />
+              {errors.message ? <ErrorText>{errors.message}</ErrorText> : null}
+            </div>
+          </>
+        )}
       </div>
+
       {status === "error" ? (
-      <p className="mt-4 text-sm text-red-700" role="alert">
-  We couldn't send your enquiry right now. Please try again.
-</p>
+        <p className="mt-4 text-sm text-red-700" role="alert">
+          We couldn't send your enquiry right now. Please try again.
+        </p>
       ) : null}
+
       <button
         type="submit"
         disabled={status === "submitting"}
         className="mt-6 inline-flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary-dark disabled:opacity-60"
       >
-        {status === "submitting" ? "Sending…" : "Submit enquiry"}
+        {status === "submitting" ? "Sending…" : submitLabel}
       </button>
     </form>
   );

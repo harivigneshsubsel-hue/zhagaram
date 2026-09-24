@@ -2,7 +2,16 @@ import { z } from "zod";
 
 import { products } from "@/data/products";
 
-export const enquirySchema = z.object({
+export const supplierEnquirySchema = z.object({
+  name: z.string().trim().min(2, "Please enter your name."),
+  email: z.string().trim().email("Please enter a valid email address."),
+  phone: z.string().trim().min(6, "Please enter a phone number."),
+  gstNumber: z.string().trim().min(3, "Please enter your GST number."),
+  product: z.string().trim().min(1, "Please select a product."),
+  message: z.string().trim().min(10, "Please add a short message."),
+});
+
+export const customerEnquirySchema = z.object({
   name: z.string().trim().min(2, "Please enter your name."),
   company: z.string().trim().min(2, "Please enter your company name."),
   email: z.string().trim().email("Please enter a valid email address."),
@@ -13,34 +22,54 @@ export const enquirySchema = z.object({
   message: z.string().trim().min(10, "Please add a short message."),
 });
 
-export type EnquiryInput = z.infer<typeof enquirySchema>;
+export type SupplierEnquiryInput = z.infer<typeof supplierEnquirySchema>;
+export type CustomerEnquiryInput = z.infer<typeof customerEnquirySchema>;
 
 export const productOptions = [
-  ...products.map((product) => ({ value: product.slug, label: product.title })),
-  { value: "general", label: "General enquiry" },
+  ...products.map((product) => ({
+    value: product.slug,
+    label: product.title,
+  })),
+  {
+    value: "general",
+    label: "General enquiry",
+  },
 ];
 
 export async function submitEnquiry(
-  data: EnquiryInput,
+  data: Record<string, string>,
 ): Promise<{ ok: true }> {
-  const response = await fetch(
-    "http://localhost:4000/api/enquiry",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+  const response = await fetch("/api/enquiry", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(data),
+  });
 
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      result.message || "Failed to send enquiry.",
-    );
+    throw new Error(result.message || "Failed to send enquiry.");
   }
 
   return { ok: true };
+}
+
+export async function submitSupplierEnquiry(
+  data: SupplierEnquiryInput,
+): Promise<{ ok: true }> {
+  return submitEnquiry({
+    formType: "supplier",
+    ...data,
+  });
+}
+
+export async function submitCustomerEnquiry(
+  data: CustomerEnquiryInput,
+): Promise<{ ok: true }> {
+  return submitEnquiry({
+    formType: "customer",
+    ...data,
+  });
 }

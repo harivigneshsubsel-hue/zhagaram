@@ -23,7 +23,7 @@ function QuotePage() {
     <>
       <ContactHero
         title="Get a Quote"
-        description="Tell us the product, quantity, and destination. The form is validated in the browser; email sending will be connected later."
+        description="Tell us the product, quantity, and destination. Your enquiry is validated before it is sent to our team."
       />
       <section className="py-16 sm:py-20">
         <Container>
@@ -48,7 +48,11 @@ function QuotePage() {
                 {products.map((product) => product.title).join(" · ")}
               </p>
             </div>
-            <ContactForm heading="Quote request" />
+            <ContactForm
+              heading="Quote request"
+              variant="customer"
+              submitLabel="Submit enquiry"
+            />
           </div>
         </Container>
       </section>

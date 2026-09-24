@@ -22,7 +22,7 @@ function ExportProcessPage() {
   return (
     <>
       <PageHero
-  image="public/images/export/export-process-banner.png"
+  image="/images/export/export-process-banner.png"
   kicker="Export Process"
   title="From sourcing to international delivery"
   description="A structured supply and export process connecting Indian products with global customers."

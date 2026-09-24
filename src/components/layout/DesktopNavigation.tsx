@@ -27,28 +27,23 @@ export function DesktopNavigation({
           <Link
             key={item.href}
             to={item.href}
+            preload="intent"
             className={cn(
-              "relative rounded-md px-4 py-2.5 text-sm font-medium",
+              "relative rounded-md px-3.5 py-2.5 text-sm font-medium tracking-[0.01em]",
               "transition-all duration-200",
-
-              // BEFORE SCROLL
               tone === "light"
                 ? active
                   ? "text-primary"
-                  : "text-primary/75 hover:text-primary"
-
-                // AFTER SCROLL
+                  : "text-primary/75 hover:text-secondary"
                 : active
                   ? "text-primary"
-                  : "text-primary/75 hover:text-primary",
+                  : "text-primary/75 hover:text-secondary",
             )}
           >
             {item.label}
 
             {active && (
-              <span
-                className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-primary"
-              />
+              <span className="absolute -bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent" />
             )}
           </Link>
         );

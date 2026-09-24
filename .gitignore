@@ -1,8 +1,10 @@
 node_modules/
+.vercel/
+.tanstack/
 .project_id
 .github_repo
 .env
 .env.*
-.env
-.env.*
 !.env.example
+*.log
+.DS_Store

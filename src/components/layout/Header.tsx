@@ -83,12 +83,14 @@ export function Header() {
       )}
     >
       <Container
-        className={cn(
-          "flex items-center justify-between",
-          "transition-all duration-300",
-          solidHeader ? "h-[4.5rem]" : "h-[4.75rem]",
-        )}
-      >
+  className={cn(
+    "flex items-center justify-between",
+    "transition-all duration-300",
+    solidHeader
+      ? "h-16 sm:h-[4.5rem] lg:h-[5rem] xl:h-[5.5rem]"
+      : "h-16 sm:h-[4.75rem] lg:h-[5.25rem] xl:h-[5.75rem]",
+  )}
+>
         {/* LOGO */}
         <div className="shrink-0">
           <Logo tone={tone} />

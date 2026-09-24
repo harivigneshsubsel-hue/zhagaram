@@ -4,7 +4,7 @@ import { companyCopy } from "@/data/site";
 export function AboutHero() {
   return (
     <PageHero
-  image="public/images/about/about-banner.png"
+  image="/images/about/about-banner.png"
   kicker="About"
   title="An India-based export and import house"
   description={companyCopy.intro}

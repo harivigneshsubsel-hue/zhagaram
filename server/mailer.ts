@@ -1,13 +1,19 @@
 import nodemailer from "nodemailer";
 
+const smtpUser = process.env.SMTP_USER;
+const smtpPassword = process.env.SMTP_PASSWORD;
+
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT || 587),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
+  host: process.env.SMTP_HOST || "smtp.gmail.com",
+  port: Number(process.env.SMTP_PORT || 465),
+  secure: Number(process.env.SMTP_PORT || 465) === 465,
+  auth:
+    smtpUser && smtpPassword
+      ? {
+          user: smtpUser,
+          pass: smtpPassword,
+        }
+      : undefined,
 });
 
 export async function sendEmail({
@@ -19,6 +25,10 @@ export async function sendEmail({
   subject: string;
   html: string;
 }) {
+  if (!process.env.MAIL_FROM) {
+    throw new Error("MAIL_FROM environment variable is not configured.");
+  }
+
   return transporter.sendMail({
     from: `"ZHAGARAM EXIM LLP" <${process.env.MAIL_FROM}>`,
     to,

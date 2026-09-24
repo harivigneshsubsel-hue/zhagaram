@@ -9,7 +9,7 @@
  "scripts": {
   "dev": "vite --host 0.0.0.0 --port 3000",
   "dev:mail": "tsx server/index.ts",
-  "build": "node scripts/with-app-env.mjs vite build",
+ "build": "prisma generate && node scripts/with-app-env.mjs vite build",
   "db:migrate": "node scripts/migrate.mjs",
   "db:generate": "prisma generate",
   "db:migrate:dev": "prisma migrate dev",
